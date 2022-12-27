@@ -29,11 +29,11 @@ func main() {
 		freshTime = 1
 	}
 
-	currentPosition := GetMousePos()
 	for {
 		time.Sleep(time.Duration(freshTime) * time.Second)
-		currentPosition = NextPosition(currentPosition)
-		MoveMouse(currentPosition)
+		currentPosition := GetMousePos()
+		nextPosition := GetNextPosition(currentPosition)
+		MoveMouse(nextPosition)
 	}
 }
 
@@ -46,16 +46,16 @@ func MoveMouse(point robotgo.Point) {
 	robotgo.Move(point.X, point.Y)
 }
 
-func NextPosition(point robotgo.Point) robotgo.Point {
+func GetNextPosition(point robotgo.Point) robotgo.Point {
 	nextIndex := rand.Intn(len(MoveDirection))
 	nextPoint := robotgo.Point{
 		X: point.X + MoveDirection[nextIndex].X,
 		Y: point.Y + MoveDirection[nextIndex].Y,
 	}
-	return reNextPosition(nextPoint)
+	return handleCrossScreen(nextPoint)
 }
 
-func reNextPosition(point robotgo.Point) robotgo.Point {
+func handleCrossScreen(point robotgo.Point) robotgo.Point {
 	width, height := robotgo.GetScreenSize()
 	return robotgo.Point{
 		X: adjustPos(width, point.X),
