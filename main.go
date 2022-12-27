@@ -8,13 +8,13 @@ import (
 	"github.com/go-vgo/robotgo"
 )
 
-const MoveStep = 30
+const MoveStep = 1
 
 var MoveDirection [4]robotgo.Point = [4]robotgo.Point{
-	{X: -MoveStep, Y: -MoveStep},
-	{X: -MoveStep, Y: MoveStep},
-	{X: MoveStep, Y: -MoveStep},
-	{X: MoveStep, Y: MoveStep},
+	{X: -MoveStep, Y: 0},
+	{X: 0, Y: -MoveStep},
+	{X: MoveStep, Y: 0},
+	{X: 0, Y: MoveStep},
 }
 
 func init() {
@@ -25,6 +25,9 @@ func main() {
 	var freshTime int
 	flag.IntVar(&freshTime, "fresh", 1, "mouse fresh time, must be greater zero")
 	flag.Parse()
+	if freshTime <= 0 {
+		freshTime = 1
+	}
 
 	currentPosition := GetMousePos()
 	for {
