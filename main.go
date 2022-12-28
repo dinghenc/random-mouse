@@ -29,11 +29,14 @@ func main() {
 		freshTime = 1
 	}
 
+	ticker := time.NewTicker(time.Duration(freshTime) * time.Second)
 	for {
-		time.Sleep(time.Duration(freshTime) * time.Second)
-		currentPosition := GetMousePos()
-		nextPosition := GetNextPosition(currentPosition)
-		MoveMouse(nextPosition)
+		select {
+		case <-ticker.C:
+			currentPosition := GetMousePos()
+			nextPosition := GetNextPosition(currentPosition)
+			MoveMouse(nextPosition)
+		}
 	}
 }
 
