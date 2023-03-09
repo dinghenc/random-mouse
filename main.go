@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -32,38 +33,62 @@ func init() {
 
 func main() {
 	var freshDuration time.Duration
-	var exitDuration time.Duration
+	var inExitDuration time.Duration
+	var exitTimeStr string
 	flag.DurationVar(&freshDuration, "fresh", time.Minute, "mouse fresh time")
-	flag.DurationVar(&exitDuration, "duration", 2*time.Hour, "time duration of random-mouse exit")
+	flag.DurationVar(&inExitDuration, "duration", 2*time.Hour, "time duration of random-mouse exit")
+	flag.StringVar(&exitTimeStr, "time", "", "absolute time of random-mouse exit, eg: (2006-01-02 15:04:05)")
 	flag.Parse()
 
-	now := time.Now()
-	exitTime := now.Add(exitDuration)
+	now, exitTime, exitDuration, err := CalcExitTime(inExitDuration, exitTimeStr)
+	if err != nil {
+		log.Fatalf("calc exit time failed: %v", err)
+	}
+
 	log.Printf("now is %s\n", now.Format(TimeFormat))
-	log.Printf("%s will exit when time is %s, it's fresh time is %ds\n",
-		ProgramName, exitTime.Format(TimeFormat), freshDuration/time.Second)
+	log.Printf("%s will exit when time is %s, duration is %0.1fs, it's fresh time is %0.1fs\n",
+		ProgramName, exitTime.Format(TimeFormat), exitDuration.Seconds(), freshDuration.Seconds())
 
 	exitTimer := time.NewTimer(exitDuration)
 	ticker := time.NewTicker(freshDuration)
 	for {
 		select {
 		case <-ticker.C:
-			currentPosition := GetMousePos()
-			nextPosition := GetNextPosition(currentPosition)
-			MoveMouse(nextPosition)
+			RandomMoveMouse()
 		case <-exitTimer.C:
 			exitTimer.Stop()
 			ticker.Stop()
 			log.Printf("now is %s, time is up, %s exit...\n", time.Now().Format(TimeFormat), ProgramName)
 			time.Sleep(5 * time.Second)
 			LockScreen()
-			os.Exit(0)
+			return
 		}
 	}
 }
 
+func CalcExitTime(inExitDuration time.Duration, exitTimeStr string) (
+	now time.Time, exitTime time.Time, exitDuration time.Duration, err error) {
+	now = time.Now()
+	if exitTimeStr == "" {
+		return now, now.Add(inExitDuration), inExitDuration, nil
+	}
+	exitTime, err = time.ParseInLocation(TimeFormat, exitTimeStr, time.Local)
+	if err != nil {
+		return now, exitTime, inExitDuration, fmt.Errorf("parse exit time failed: %w", err)
+	} else if exitTime.Before(now) {
+		return now, exitTime, inExitDuration, fmt.Errorf("exit time is illegal, before now")
+	}
+	return now, exitTime, exitTime.Sub(now), nil
+}
+
 func LockScreen() {
 	robotgo.KeyTap("q", "lcmd", "lctrl")
+}
+
+func RandomMoveMouse() {
+	currentPosition := GetMousePos()
+	nextPosition := GetNextPosition(currentPosition)
+	MoveMouse(nextPosition)
 }
 
 func GetMousePos() robotgo.Point {
