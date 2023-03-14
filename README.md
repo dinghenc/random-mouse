@@ -9,7 +9,7 @@ go install github.com/dinghenc/random-mouse@v1.0.3
 
 ## How to use
 ```bash
-Usage of ./random-mouse:
+Usage of random-mouse:
   -duration duration
         time duration of random-mouse exit (default 2h0m0s)
   -fresh duration
