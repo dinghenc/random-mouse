@@ -26,3 +26,7 @@ random-mouse -fresh=1s -time="2023-03-13 23:31:30"
 # specify a refresh time of 2 min, and end after a certain period of time
 random-mouse -fresh=2m -duration=2h30m
 ```
+
+## Todo
+1. split methods to different package
+2. support multiple display screen
