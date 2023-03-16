@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"flag"
@@ -17,10 +17,10 @@ var (
 )
 
 type Config struct {
-	now           time.Time
-	exitTime      time.Time
-	exitDuration  time.Duration
-	freshDuration time.Duration
+	Now           time.Time
+	ExitTime      time.Time
+	ExitDuration  time.Duration
+	FreshDuration time.Duration
 }
 
 func init() {
@@ -36,10 +36,10 @@ func NewConfig() (*Config, error) {
 		return nil, fmt.Errorf("calc exit time failed: %w", err)
 	}
 	return &Config{
-		now:           now,
-		exitTime:      exitTime,
-		exitDuration:  exitDuration,
-		freshDuration: freshDuration,
+		Now:           now,
+		ExitTime:      exitTime,
+		ExitDuration:  exitDuration,
+		FreshDuration: freshDuration,
 	}, nil
 }
 
