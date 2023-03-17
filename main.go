@@ -12,6 +12,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("new config failed: %v", err)
 	}
-	r := mouse.NewMouseRunner(cfg)
+	r := mouse.NewRunner(cfg)
 	r.Run()
 }

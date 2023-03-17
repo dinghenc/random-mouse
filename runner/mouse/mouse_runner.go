@@ -13,7 +13,7 @@ type Runner struct {
 	config *config.Config
 }
 
-func NewMouseRunner(config *config.Config) runner.Runner {
+func NewRunner(config *config.Config) runner.Runner {
 	return &Runner{config: config}
 }
 
