@@ -28,5 +28,5 @@ random-mouse -fresh=2m -duration=2h30m
 ```
 
 ## Todo
-1. split methods to different package
+1. split methods to different package - done
 2. support multiple display screen
