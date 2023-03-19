@@ -21,7 +21,7 @@ Usage of random-mouse:
 ## Examples
 ```bash
 # specify a refresh time of 1 second, and the specific time ends
-random-mouse -fresh=1s -time="2023-03-13 23:31:30"
+random-mouse -fresh=1s -time="2006-01-02 15:04:05"
 
 # specify a refresh time of 2 min, and end after a certain period of time
 random-mouse -fresh=2m -duration=2h30m
