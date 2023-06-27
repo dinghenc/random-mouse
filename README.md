@@ -25,6 +25,10 @@ random-mouse -fresh=1s -time="2006-01-02 15:04:05"
 
 # specify a refresh time of 2 min, and end after a certain period of time
 random-mouse -fresh=2m -duration=2h30m
+
+
+# specify a refresh time of 2 min, and end after a certain period of time, with mouse move checker
+random-mouse -fresh=2m -duration=2h30m -check
 ```
 
 ## Todo
