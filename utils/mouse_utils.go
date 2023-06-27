@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"math"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -40,6 +41,14 @@ func RandomMoveMouse() {
 func GetMousePos() robotgo.Point {
 	x, y := robotgo.GetMousePos()
 	return robotgo.Point{X: x, Y: y}
+}
+
+func EmptyMousePos(p robotgo.Point) bool {
+	return p.X == 0 && p.Y == 0
+}
+
+func DistanceBetweenPos(ori, dst robotgo.Point) float64 {
+	return math.Sqrt(float64((ori.X-dst.X)*(ori.X-dst.X) + (ori.Y-dst.Y)*(ori.Y-dst.Y)))
 }
 
 func MoveMouse(point robotgo.Point) {

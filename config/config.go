@@ -14,6 +14,7 @@ var (
 	freshDuration  time.Duration
 	inExitDuration time.Duration
 	exitTimeStr    string
+	check          bool
 )
 
 type Config struct {
@@ -21,12 +22,14 @@ type Config struct {
 	ExitTime      time.Time
 	ExitDuration  time.Duration
 	FreshDuration time.Duration
+	Check         bool
 }
 
 func init() {
 	flag.DurationVar(&freshDuration, "fresh", time.Minute, "mouse fresh time")
 	flag.DurationVar(&inExitDuration, "duration", 2*time.Hour, "time duration of random-mouse exit")
 	flag.StringVar(&exitTimeStr, "time", "", "absolute time of random-mouse exit, eg: (2006-01-02 15:04:05)")
+	flag.BoolVar(&check, "check", false, "do check mouse move")
 	flag.Parse()
 }
 
@@ -40,6 +43,7 @@ func NewConfig() (*Config, error) {
 		ExitTime:      exitTime,
 		ExitDuration:  exitDuration,
 		FreshDuration: freshDuration,
+		Check:         check,
 	}, nil
 }
 
